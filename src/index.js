@@ -6,6 +6,9 @@ import debounce from 'lodash.debounce';
 import './css/styles.css';
 
 import { fetchCountries } from './js/fetchCountrie';
+import { createCountryInfo } from './js/templates/country-list';
+import { createCountryList } from './js/templates/country-list';
+
 
 const DEBOUNCE_DELAY = 300;
 
@@ -21,10 +24,11 @@ const searchCountry = e => {
       countriesData(data);
     })
     .catch(error => {
-      if (searchTerm !== '') {
+      countryInfo.innerHTML = '';
+      countryList.innerHTML = '';
         Notiflix.Notify.failure('Oops, there is no country with that name');
       }
-    });
+    );
 
   e.preventDefault();
 };
@@ -41,44 +45,12 @@ function countriesData(data) {
     clearData(countryList);
     clearData(countryInfo);
 
-    return (countryList.innerHTML = data
-      .map(
-        item => `
-                
-                    <li class = 'country'>
-                        <img class='flag' src = '${item.flags.svg}' />
-                        <p>${item.name}</p>
-                    </li>
-                
-                `
-      )
-      .join(''));
+    return countryList.innerHTML = createCountryList(data);
   } else {
     clearData(countryList);
     clearData(countryInfo);
 
-    return (countryInfo.innerHTML = data
-      .map(
-        item => `
-                
-                    <div class = 'country-card'>
-                    
-                        <div class = 'card-title'>
-                        <img class='flag-card' src = '${item.flags.svg}' />
-                        <h3 class='title-country'>${item.name}</h3>
-                        </div>
-                        <div class = 'country-body'>
-                                                    
-                            <p><b>Capital: </b> ${item.capital}</p>
-                            <p><b>Population: </b> ${item.population.toLocaleString()}</p>
-                            <p><b>Languages: </b> ${item.languages[0].name}</p>
-                        </div>
-    
-                    </div>
-                
-                `
-      )
-      .join(''));
+    return countryInfo.innerHTML = createCountryInfo(data);
   }
 }
 

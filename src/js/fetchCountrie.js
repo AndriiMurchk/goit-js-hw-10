@@ -6,5 +6,5 @@ export function fetchCountries(searchTerm) {
       }
       return response.json();
     })
-    .catch(error => console.log(`${error.name}: ${error.message}`));
+    
 }
